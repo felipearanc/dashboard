@@ -7,93 +7,100 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #0d0f14;
-    --card: #161b24;
-    --card2: #1c2333;
-    --accent: #d97757;
-    --accent2: #8b5cf6;
-    --accent3: #22d3ee;
-    --accent4: #34d399;
-    --text: #e2e8f0;
-    --muted: #64748b;
-    --border: #1e293b;
+    --bg: #0d0f14; --card: #161b24; --card2: #1c2333;
+    --accent: #d97757; --accent2: #8b5cf6; --accent3: #22d3ee; --accent4: #34d399;
+    --text: #e2e8f0; --muted: #64748b; --border: #1e293b;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, sans-serif; min-height: 100vh; }
 
-  /* HEADER */
   .header { background: linear-gradient(135deg, #1a1f2e 0%, #0d1117 100%); border-bottom: 1px solid var(--border); padding: 20px 32px; display: flex; justify-content: space-between; align-items: center; }
-  .header-left h1 { font-size: 20px; font-weight: 700; color: var(--text); }
+  .header-left h1 { font-size: 20px; font-weight: 700; }
   .header-left h1 span { color: var(--accent); }
   .header-left p { font-size: 13px; color: var(--muted); margin-top: 2px; }
   .header-right { display: flex; gap: 12px; align-items: center; }
   .badge { background: var(--card2); border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 12px; color: var(--muted); }
   .badge b { color: var(--accent4); }
-  .btn-refresh { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
-  .btn-refresh:hover { opacity: 0.85; }
+  .btn { background: var(--accent); color: white; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; transition: opacity .2s; }
+  .btn:hover { opacity: .85; }
+  .btn-ghost { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
 
-  /* TABS */
-  .tabs { display: flex; gap: 4px; padding: 16px 32px 0; border-bottom: 1px solid var(--border); background: var(--bg); }
-  .tab { padding: 10px 20px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); border: 1px solid transparent; border-bottom: none; transition: all 0.2s; }
+  .tabs { display: flex; gap: 4px; padding: 16px 32px 0; border-bottom: 1px solid var(--border); }
+  .tab { padding: 10px 20px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--muted); border: 1px solid transparent; border-bottom: none; transition: all .2s; }
   .tab.active { background: var(--card); color: var(--text); border-color: var(--border); }
   .tab:hover:not(.active) { color: var(--text); }
 
-  /* MAIN */
   .main { padding: 24px 32px; max-width: 1400px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
 
-  /* KPIS */
   .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
   .kpi { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; position: relative; overflow: hidden; }
-  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent-color, var(--accent)); }
-  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
-  .kpi .value { font-size: 36px; font-weight: 800; color: var(--text); line-height: 1; }
+  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--kpi-color, var(--accent)); }
+  .kpi .label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .kpi .value { font-size: 36px; font-weight: 800; line-height: 1; }
   .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 8px; }
-  .kpi .trend { font-size: 12px; font-weight: 600; }
-  .kpi .trend.up { color: var(--accent4); }
-  .kpi .trend.neutral { color: var(--muted); }
+  .kpi .pill { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .pill-green { background: rgba(52,211,153,.15); color: var(--accent4); }
+  .pill-orange { background: rgba(217,119,87,.15); color: var(--accent); }
+  .pill-purple { background: rgba(139,92,246,.15); color: var(--accent2); }
+  .pill-cyan { background: rgba(34,211,238,.15); color: var(--accent3); }
 
-  /* CHARTS GRID */
   .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
   .charts-grid.wide { grid-template-columns: 2fr 1fr; }
   .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; }
-  .chart-card h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .chart-card p { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-  .chart-wrap { position: relative; }
+  .chart-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .chart-card .subtitle { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
 
-  /* TABLE */
   .table-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
-  .table-card h3 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+  .table-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 16px; }
   table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
-  td { font-size: 13px; color: var(--text); padding: 12px; border-bottom: 1px solid #1a2236; }
+  th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  td { font-size: 13px; padding: 12px; border-bottom: 1px solid #1a2236; vertical-align: top; }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: rgba(255,255,255,0.02); }
-  .status-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-  .status-badge.completado { background: rgba(52,211,153,0.15); color: var(--accent4); }
-  .status-badge.pendiente { background: rgba(217,119,87,0.15); color: var(--accent); }
-  .status-badge.progreso { background: rgba(139,92,246,0.15); color: var(--accent2); }
+  tr:hover td { background: rgba(255,255,255,.02); }
 
-  /* PENDING */
-  .pending-list { display: flex; flex-direction: column; gap: 10px; }
-  .pending-item { background: var(--card2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; }
-  .pending-item .pi-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-  .pending-item .pi-desc { font-size: 12px; color: var(--muted); }
+  .status { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+  .status-completado { background: rgba(52,211,153,.15); color: var(--accent4); }
+  .status-pendiente { background: rgba(217,119,87,.15); color: var(--accent); }
+  .status-progreso { background: rgba(139,92,246,.15); color: var(--accent2); }
 
-  /* HEATMAP */
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; background: var(--card2); border: 1px solid var(--border); margin: 2px; }
+
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: flex; gap: 16px; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; width: 40px; flex-shrink: 0; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--dot-color, var(--accent)); margin-top: 4px; flex-shrink: 0; }
+  .tl-line { width: 2px; flex: 1; background: var(--border); min-height: 24px; }
+  .tl-item:last-child .tl-line { display: none; }
+  .tl-content { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; flex: 1; }
+  .tl-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .tl-content .meta { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .tl-content .body { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+  .pending-item { background: var(--card2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 8px; padding: 14px 16px; margin-bottom: 10px; }
+  .pending-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .pending-item p { font-size: 12px; color: var(--muted); }
+
+  .insight-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+  .insight { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .insight .icon { font-size: 28px; margin-bottom: 10px; }
+  .insight h4 { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .insight p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  .footer { text-align: center; padding: 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 24px; }
+  .footer a { color: var(--accent3); text-decoration: none; }
+
   .heatmap-wrap { display: flex; flex-direction: column; gap: 4px; }
   .heatmap-row { display: flex; gap: 4px; align-items: center; }
-  .heatmap-label { font-size: 11px; color: var(--muted); width: 32px; flex-shrink: 0; }
-  .heatmap-cell { width: 28px; height: 28px; border-radius: 4px; background: #1a2236; transition: background 0.2s; cursor: default; }
-  .heatmap-cell:hover { outline: 1px solid var(--accent); }
-  .heatmap-hours { display: flex; gap: 4px; padding-left: 36px; margin-bottom: 4px; }
-  .heatmap-hours span { width: 28px; font-size: 10px; color: var(--muted); text-align: center; }
+  .hm-label { font-size: 11px; color: var(--muted); width: 32px; flex-shrink: 0; }
+  .hm-cell { width: 28px; height: 28px; border-radius: 4px; background: #1a2236; cursor: default; transition: outline .1s; }
+  .hm-cell:hover { outline: 1px solid var(--accent); }
+  .hm-hours { display: flex; gap: 4px; padding-left: 36px; margin-bottom: 4px; }
+  .hm-hours span { width: 28px; font-size: 10px; color: var(--muted); text-align: center; }
 
-  /* FOOTER */
-  .footer { text-align: center; padding: 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--border); margin-top: 24px; }
-
-  /* TAB PANELS */
-  .panel { display: none; }
-  .panel.active { display: block; }
+  .progress-bar { background: var(--card2); border-radius: 4px; height: 6px; margin-top: 6px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 4px; background: var(--fill-color, var(--accent)); }
 </style>
 </head>
 <body>
@@ -101,291 +108,319 @@
 <div class="header">
   <div class="header-left">
     <h1>Claude <span>Dashboard</span></h1>
-    <p>Felipe Arancibia · Análisis de uso y productividad</p>
+    <p>Felipe Arancibia · Historial completo de uso en Cowork</p>
   </div>
   <div class="header-right">
-    <div class="badge">Última actualización: <b id="last-update">6 Jul 2026, 08:00</b></div>
-    <button class="btn-refresh" onclick="window.location.reload()">↻ Actualizar</button>
+    <div class="badge">Última actualización: <b id="last-update">—</b></div>
+    <button class="btn btn-ghost" onclick="window.location.reload()">↻ Actualizar</button>
+    <button class="btn" onclick="window.open('https://github.com/felipearanc/dashboard','_blank')">GitHub ↗</button>
   </div>
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('overview')">📊 Resumen</div>
+  <div class="tab active"  onclick="showTab('overview')">📊 Resumen</div>
+  <div class="tab" onclick="showTab('timeline')">📅 Timeline</div>
   <div class="tab" onclick="showTab('conversations')">💬 Conversaciones</div>
   <div class="tab" onclick="showTab('pending')">⏳ Pendientes</div>
-  <div class="tab" onclick="showTab('weekly')">📅 Semana</div>
+  <div class="tab" onclick="showTab('insights')">💡 Insights</div>
 </div>
 
 <div class="main">
 
-  <!-- OVERVIEW TAB -->
-  <div id="tab-overview" class="panel active">
+<!-- ── RESUMEN ── -->
+<div id="tab-overview" class="panel active">
 
-    <div class="kpi-grid">
-      <div class="kpi" style="--accent-color: var(--accent3)">
-        <div class="label">Conversaciones hoy</div>
-        <div class="value" id="kpi-total">3</div>
-        <div class="sub">Últimas 24 horas</div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent4)">
-        <div class="label">Completadas</div>
-        <div class="value" id="kpi-done">2</div>
-        <div class="sub"><span class="trend up">✓ 67% tasa de éxito</span></div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent)">
-        <div class="label">Pendientes</div>
-        <div class="value" id="kpi-pending">1</div>
-        <div class="sub"><span class="trend neutral">Requieren seguimiento</span></div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent2)">
-        <div class="label">Artefactos generados</div>
-        <div class="value" id="kpi-artifacts">1</div>
-        <div class="sub">Reportes, docs, scripts</div>
-      </div>
+  <div class="kpi-grid">
+    <div class="kpi" style="--kpi-color: var(--accent3)">
+      <div class="label">Total conversaciones</div>
+      <div class="value">3</div>
+      <div class="sub"><span class="pill pill-cyan">Historial completo Cowork</span></div>
     </div>
-
-    <div class="charts-grid wide">
-      <div class="chart-card">
-        <h3>Temas más frecuentes</h3>
-        <p>Distribución por categoría de solicitudes</p>
-        <div class="chart-wrap" style="height:240px">
-          <canvas id="topicsChart"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3>Estado de tareas</h3>
-        <p>Completadas vs pendientes</p>
-        <div class="chart-wrap" style="height:240px">
-          <canvas id="statusChart"></canvas>
-        </div>
-      </div>
+    <div class="kpi" style="--kpi-color: var(--accent4)">
+      <div class="label">Completadas</div>
+      <div class="value">2</div>
+      <div class="sub"><span class="pill pill-green">67% tasa de éxito</span></div>
     </div>
-
-    <div class="charts-grid">
-      <div class="chart-card">
-        <h3>Actividad semanal</h3>
-        <p>Conversaciones por día (últimos 7 días)</p>
-        <div class="chart-wrap" style="height:200px">
-          <canvas id="activityChart"></canvas>
-        </div>
-      </div>
-      <div class="chart-card">
-        <h3>Categorías de artefactos</h3>
-        <p>Tipos de outputs generados</p>
-        <div class="chart-wrap" style="height:200px">
-          <canvas id="artifactsChart"></canvas>
-        </div>
-      </div>
+    <div class="kpi" style="--kpi-color: var(--accent)">
+      <div class="label">Pendientes</div>
+      <div class="value">1</div>
+      <div class="sub"><span class="pill pill-orange">1 sin resolución</span></div>
     </div>
-
-  </div>
-
-  <!-- CONVERSATIONS TAB -->
-  <div id="tab-conversations" class="panel">
-    <div class="table-card">
-      <h3>Detalle de conversaciones — 6 Jul 2026</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Título</th>
-            <th>Tema principal</th>
-            <th>Estado</th>
-            <th>Artefacto</th>
-          </tr>
-        </thead>
-        <tbody id="conv-table-body">
-        </tbody>
-      </table>
+    <div class="kpi" style="--kpi-color: var(--accent2)">
+      <div class="label">Artefactos generados</div>
+      <div class="value">4</div>
+      <div class="sub"><span class="pill pill-purple">Docs, scripts, dashboard</span></div>
     </div>
   </div>
 
-  <!-- PENDING TAB -->
-  <div id="tab-pending" class="panel">
-    <div class="table-card">
-      <h3>⏳ Pendientes que requieren seguimiento</h3>
-      <div class="pending-list" id="pending-list">
-      </div>
-    </div>
-  </div>
-
-  <!-- WEEKLY TAB -->
-  <div id="tab-weekly" class="panel">
-    <div class="kpi-grid">
-      <div class="kpi" style="--accent-color: var(--accent3)">
-        <div class="label">Total semana</div>
-        <div class="value">3</div>
-        <div class="sub">Conversaciones</div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent4)">
-        <div class="label">Temas únicos</div>
-        <div class="value">4</div>
-        <div class="sub">Automatización, Jira, Reportes, Plugins</div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent2)">
-        <div class="label">Día más activo</div>
-        <div class="value">Lun</div>
-        <div class="sub">6 de julio</div>
-      </div>
-      <div class="kpi" style="--accent-color: var(--accent)">
-        <div class="label">Potencial no usado</div>
-        <div class="value">Alto</div>
-        <div class="sub">1 tarea abandonada</div>
-      </div>
-    </div>
-    <div class="chart-card" style="margin-bottom:16px">
-      <h3>Mapa de calor — Actividad por hora y día</h3>
-      <p>Intensidad de uso (conversaciones iniciadas)</p>
-      <div class="heatmap-hours" id="heatmap-hours"></div>
-      <div class="heatmap-wrap" id="heatmap"></div>
+  <div class="charts-grid wide">
+    <div class="chart-card">
+      <h3>Temas abordados</h3>
+      <div class="subtitle">Distribución por categoría de todas las conversaciones</div>
+      <div style="height:240px; position:relative"><canvas id="topicsChart"></canvas></div>
     </div>
     <div class="chart-card">
-      <h3>Resumen ejecutivo de la semana</h3>
-      <p style="color: var(--text); font-size:14px; line-height:1.8; margin-top:8px;" id="weekly-summary"></p>
+      <h3>Estado de tareas</h3>
+      <div class="subtitle">Completadas vs pendientes</div>
+      <div style="height:240px; position:relative"><canvas id="statusChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Actividad — últimos 7 días</h3>
+      <div class="subtitle">Conversaciones iniciadas por día</div>
+      <div style="height:200px; position:relative"><canvas id="activityChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Artefactos por tipo</h3>
+      <div class="subtitle">Outputs generados por Claude</div>
+      <div style="height:200px; position:relative"><canvas id="artifactsChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h3>Progreso de temas clave</h3>
+      <div class="subtitle">Avance por área de trabajo</div>
+      <div id="progress-bars" style="margin-top:8px"></div>
+    </div>
+    <div class="chart-card">
+      <h3>Complejidad por conversación</h3>
+      <div class="subtitle">Turnos de diálogo (profundidad de la sesión)</div>
+      <div style="height:200px; position:relative"><canvas id="complexityChart"></canvas></div>
     </div>
   </div>
 
 </div>
 
+<!-- ── TIMELINE ── -->
+<div id="tab-timeline" class="panel">
+  <div class="table-card">
+    <h3>Cronología de conversaciones — Historial completo</h3>
+    <div class="timeline" id="timeline-container"></div>
+  </div>
+</div>
+
+<!-- ── CONVERSACIONES ── -->
+<div id="tab-conversations" class="panel">
+  <div class="table-card">
+    <h3>Detalle completo de conversaciones</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Título</th><th>Temas</th><th>Resumen</th><th>Estado</th><th>Artefactos</th>
+        </tr>
+      </thead>
+      <tbody id="conv-tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── PENDIENTES ── -->
+<div id="tab-pending" class="panel">
+  <div class="table-card">
+    <h3>⏳ Pendientes que requieren seguimiento</h3>
+    <div id="pending-container"></div>
+  </div>
+</div>
+
+<!-- ── INSIGHTS ── -->
+<div id="tab-insights" class="panel">
+  <div class="insight-grid" id="insight-grid"></div>
+
+  <div class="chart-card" style="margin-bottom:16px">
+    <h3>Mapa de calor de actividad</h3>
+    <div class="subtitle">Intensidad por día y hora</div>
+    <div class="hm-hours" id="hm-hours"></div>
+    <div class="heatmap-wrap" id="hm-wrap"></div>
+  </div>
+
+  <div class="chart-card">
+    <h3>Resumen ejecutivo — Potencial de Claude en tu rol</h3>
+    <p id="exec-summary" style="font-size:14px; line-height:1.8; color:var(--text); margin-top:8px"></p>
+  </div>
+</div>
+
+</div><!-- /main -->
+
 <div class="footer">
-  Claude Dashboard · Generado automáticamente cada día a las 8:00 AM · <a href="https://github.com/felipearanc/dashboard" style="color:var(--accent3); text-decoration:none;">Ver en GitHub</a>
+  Claude Dashboard · Actualizado automáticamente cada día a las 8:00 AM ·
+  <a href="https://felipearanc.github.io/dashboard/">felipearanc.github.io/dashboard</a> ·
+  <a href="https://github.com/felipearanc/dashboard">GitHub</a>
 </div>
 
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// DATA — Historial completo Cowork (todas las sesiones disponibles)
+// ════════════════════════════════════════════════════════════════
 const DATA = {
   generated: "2026-07-06T08:00:00",
   conversations: [
     {
       id: 1,
       title: "Programar una tarea recurrente",
-      topic: "Automatización",
-      topicCategory: "automatizacion",
-      summary: "El usuario quería explorar cómo configurar una tarea automática. Claude inició el proceso con preguntas sobre qué automatizar.",
+      date: "2026-07-06",
+      topics: ["Automatización"],
+      summary: "Primera exploración de tareas programadas en Cowork. Claude guió al usuario a identificar qué automatizar. La sesión quedó abierta sin configurar ninguna tarea específica.",
+      detail: "El usuario quería explorar cómo funciona la automatización en Claude Cowork. Claude hizo preguntas para identificar candidatos de automatización (resumen de noticias, recordatorios, reportes). No se llegó a configurar nada concreto.",
       status: "pendiente",
+      turns: 2,
       artifacts: [],
-      date: "2026-07-06"
+      pendingActions: ["Definir qué tarea automatizar y configurarla con Claude"]
     },
     {
       id: 2,
       title: "Personaliza Claude según tu rol",
-      topic: "Jira / Configuración",
-      topicCategory: "jira",
-      summary: "Identificación de rol (Operaciones), sugerencia de plugins y carga de base de conocimiento Jira con 24 puntos de configuración activos.",
+      date: "2026-07-06",
+      topics: ["Cowork / Setup", "Jira / JSM"],
+      summary: "Setup inicial de Cowork: identificación de rol (Operaciones/Negocios), sugerencia de plugins y carga de base de conocimiento completa de Jira Service Management.",
+      detail: "Claude identificó el rol del usuario como Operaciones y Negocios. Sugirió 3 plugins: Operations (recomendado), Finance y Small Business. El usuario subió 2 archivos con configuración de Jira: base de conocimiento de Vinculación de Espacios y memoria de Automatizaciones. Claude leyó ambos y cargó como memoria operativa: proyecto MDA, estados, automatizaciones de prioridad, inactividad y flujo de mejoras, con 24 puntos pendientes registrados.",
       status: "completado",
+      turns: 6,
       artifacts: ["Base conocimiento Jira (input)", "Automatizaciones Jira (input)"],
-      date: "2026-07-06"
+      pendingActions: [
+        "Realizar consultas concretas sobre JSM usando la memoria cargada",
+        "Revisar y priorizar los 14 puntos pendientes del proyecto Automatizaciones",
+        "Revisar y priorizar los 10 puntos pendientes del proyecto Vinculación"
+      ]
     },
     {
       id: 3,
-      title: "Reporte diario de conversaciones Claude",
-      topic: "Análisis / Reportes",
-      topicCategory: "reportes",
-      summary: "Generación de reporte diario estructurado con análisis de las sesiones del día.",
+      title: "Reporte diario + Dashboard Claude",
+      date: "2026-07-06",
+      topics: ["Análisis / Reportes", "Automatización", "GitHub / Deploy"],
+      summary: "Generación del primer reporte diario de uso de Claude, diseño y publicación de dashboard interactivo en GitHub Pages, y configuración de tarea programada diaria a las 8am.",
+      detail: "Sesión más compleja y productiva. Incluye: análisis de sesiones históricas, generación de reporte Markdown diario, definición de arquitectura del dashboard (GitHub Pages + Chart.js), creación del HTML interactivo con 5 tabs, configuración del token de GitHub, creación de scripts de setup y update, configuración de tarea programada a las 8am, y actualización retroactiva del dashboard.",
       status: "completado",
-      artifacts: ["reporte-2026-07-06.md"],
-      date: "2026-07-06"
+      turns: 28,
+      artifacts: [
+        "reporte-2026-07-06.md",
+        "dashboard/index.html",
+        "setup_github.sh",
+        "update_dashboard.sh",
+        ".config.json"
+      ],
+      pendingActions: ["Ejecutar setup_github.sh para publicar en GitHub Pages"]
     }
   ],
-  pending: [
-    {
-      title: "Configurar tarea automática recurrente",
-      conversation: "Programar una tarea recurrente",
-      action: "Retomar la conversación y definir qué automatizar (ej: resumen diario de noticias, recordatorio semanal)"
-    },
-    {
-      title: "Realizar consulta con base de conocimiento Jira activa",
-      conversation: "Personaliza Claude según tu rol",
-      action: "La memoria está cargada pero no se hizo ninguna consulta. Iniciar con preguntas sobre JSM, automatizaciones o dashboards."
-    },
-    {
-      title: "Revisar 24 puntos pendientes de Jira",
-      conversation: "Personaliza Claude según tu rol",
-      action: "14 puntos pendientes del proyecto Automatizaciones + 10 del proyecto Vinculación documentados. Priorizar con el equipo."
-    }
-  ],
-  topicCounts: { "Automatización": 1, "Jira / Configuración": 1, "Análisis / Reportes": 1 },
+  topicCounts: {
+    "Automatización": 2,
+    "Jira / JSM": 1,
+    "Cowork / Setup": 1,
+    "Análisis / Reportes": 1,
+    "GitHub / Deploy": 1
+  },
   weeklyActivity: {
-    labels: ["Lun 30 Jun", "Mar 1 Jul", "Mié 2 Jul", "Jue 3 Jul", "Vie 4 Jul", "Sáb 5 Jul", "Dom 6 Jul"],
+    labels: ["Lun 30 Jun","Mar 1 Jul","Mié 2 Jul","Jue 3 Jul","Vie 4 Jul","Sáb 5 Jul","Dom 6 Jul"],
     values: [0, 0, 0, 0, 0, 0, 3]
   },
-  artifactTypes: { "Reportes (.md)": 1, "Documentos Word": 0, "Scripts Python": 0, "Presentaciones": 0 }
+  artifactTypes: {
+    "Reportes (.md)": 1,
+    "Dashboard (HTML)": 1,
+    "Scripts (.sh)": 2,
+    "Config": 1
+  },
+  progressAreas: [
+    { label: "Automatización Cowork", pct: 30, color: "#d97757" },
+    { label: "Configuración Jira", pct: 60, color: "#8b5cf6" },
+    { label: "Dashboard & Reportes", pct: 75, color: "#22d3ee" },
+    { label: "Plugins instalados", pct: 20, color: "#34d399" }
+  ],
+  insights: [
+    {
+      icon: "🚀",
+      title: "Inicio sólido en Cowork",
+      body: "3 conversaciones en el primer día de uso real. Se tocaron los pilares clave: setup, automatización y herramientas de trabajo (Jira). Buen punto de partida."
+    },
+    {
+      icon: "🧠",
+      title: "Base de conocimiento Jira activa",
+      body: "24 puntos de configuración cargados (automatizaciones, JQL, estados, permisos). Este contexto permite a Claude responder consultas específicas sin necesidad de reexplicar la configuración."
+    },
+    {
+      icon: "⚡",
+      title: "Alta complejidad en sesión 3",
+      body: "La sesión de dashboard tuvo 28 turnos — la más profunda. Indica buena capacidad de seguir flujos técnicos multi-paso con Claude."
+    },
+    {
+      icon: "📌",
+      title: "1 tarea abandonada",
+      body: "\"Programar una tarea recurrente\" quedó sin configurar. Retomar esta sesión puede desbloquear automatizaciones adicionales de alto valor."
+    },
+    {
+      icon: "📈",
+      title: "Potencial no aprovechado: Jira",
+      body: "La memoria de JSM está cargada pero no se hizo ninguna consulta operativa. Claude puede responder sobre estados, JQL, automatizaciones y configuración de forma inmediata."
+    },
+    {
+      icon: "🎯",
+      title: "Próximos pasos recomendados",
+      body: "1) Ejecutar setup_github.sh para publicar el dashboard. 2) Usar la sesión de Jira para consultas reales. 3) Definir la tarea automática pendiente."
+    }
+  ]
 };
 
-// ── TAB SWITCH ────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// TABS
+// ════════════════════════════════════════════════════════════════
 function showTab(name) {
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    const names = ['overview','conversations','pending','weekly'];
-    t.classList.toggle('active', names[i] === name);
-  });
+  const names = ['overview','timeline','conversations','pending','insights'];
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i]===name));
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
 }
 
-// ── CHARTS ───────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// CHARTS
+// ════════════════════════════════════════════════════════════════
 const COLORS = ['#d97757','#8b5cf6','#22d3ee','#34d399','#f59e0b','#ec4899'];
 
 function initCharts() {
   Chart.defaults.color = '#64748b';
   Chart.defaults.borderColor = '#1e293b';
 
-  // Topics bar chart
+  // Topics
   new Chart(document.getElementById('topicsChart'), {
     type: 'bar',
     data: {
       labels: Object.keys(DATA.topicCounts),
-      datasets: [{
-        data: Object.values(DATA.topicCounts),
-        backgroundColor: COLORS,
-        borderRadius: 6,
-        borderSkipped: false
-      }]
+      datasets: [{ data: Object.values(DATA.topicCounts), backgroundColor: COLORS, borderRadius: 6, borderSkipped: false }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: { grid: { display: false }, ticks: { color: '#64748b' } },
+        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 11 } } },
         y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', stepSize: 1 } }
       }
     }
   });
 
   // Status donut
+  const completadas = DATA.conversations.filter(c=>c.status==='completado').length;
+  const pendientes = DATA.conversations.filter(c=>c.status==='pendiente').length;
   new Chart(document.getElementById('statusChart'), {
     type: 'doughnut',
     data: {
-      labels: ['Completadas', 'Pendientes', 'En progreso'],
-      datasets: [{
-        data: [2, 1, 0],
-        backgroundColor: ['#34d399','#d97757','#8b5cf6'],
-        borderWidth: 0,
-        hoverOffset: 8
-      }]
+      labels: ['Completadas','Pendientes'],
+      datasets: [{ data: [completadas, pendientes], backgroundColor: ['#34d399','#d97757'], borderWidth: 0, hoverOffset: 8 }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      cutout: '72%',
-      plugins: {
-        legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } }
-      }
+      responsive: true, maintainAspectRatio: false, cutout: '72%',
+      plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true } } }
     }
   });
 
-  // Weekly activity
+  // Activity
   new Chart(document.getElementById('activityChart'), {
     type: 'line',
     data: {
       labels: DATA.weeklyActivity.labels,
       datasets: [{
-        label: 'Conversaciones',
-        data: DATA.weeklyActivity.values,
-        borderColor: '#22d3ee',
-        backgroundColor: 'rgba(34,211,238,0.1)',
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: '#22d3ee',
-        pointRadius: 5
+        label: 'Conversaciones', data: DATA.weeklyActivity.values,
+        borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,.1)',
+        fill: true, tension: .4, pointBackgroundColor: '#22d3ee', pointRadius: 5
       }]
     },
     options: {
@@ -398,96 +433,181 @@ function initCharts() {
     }
   });
 
-  // Artifacts chart
-  const artLabels = Object.keys(DATA.artifactTypes).filter(k => DATA.artifactTypes[k] > 0);
-  const artValues = artLabels.map(k => DATA.artifactTypes[k]);
+  // Artifacts polar
   new Chart(document.getElementById('artifactsChart'), {
     type: 'polarArea',
     data: {
-      labels: artLabels.length ? artLabels : ['Sin artefactos'],
+      labels: Object.keys(DATA.artifactTypes),
+      datasets: [{ data: Object.values(DATA.artifactTypes), backgroundColor: COLORS, borderWidth: 0 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { padding: 10, usePointStyle: true, font: { size: 11 } } } },
+      scales: { r: { grid: { color: '#1e293b' }, ticks: { display: false } } }
+    }
+  });
+
+  // Complexity bar
+  new Chart(document.getElementById('complexityChart'), {
+    type: 'bar',
+    data: {
+      labels: DATA.conversations.map(c => c.title.length > 20 ? c.title.substring(0,20)+'…' : c.title),
       datasets: [{
-        data: artValues.length ? artValues : [1],
-        backgroundColor: artValues.length ? COLORS : ['#1e293b'],
-        borderWidth: 0
+        label: 'Turnos', data: DATA.conversations.map(c => c.turns),
+        backgroundColor: ['#d97757','#8b5cf6','#22d3ee'], borderRadius: 6, borderSkipped: false
       }]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { padding: 12, usePointStyle: true, font: { size: 11 } } } },
-      scales: { r: { grid: { color: '#1e293b' }, ticks: { display: false } } }
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 11 } } },
+        y: { grid: { color: '#1e293b' }, ticks: { color: '#64748b', stepSize: 5 } }
+      }
     }
   });
 }
 
-// ── CONVERSATIONS TABLE ───────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// PROGRESS BARS
+// ════════════════════════════════════════════════════════════════
+function renderProgress() {
+  document.getElementById('progress-bars').innerHTML = DATA.progressAreas.map(a => `
+    <div style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+        <span>${a.label}</span>
+        <span style="color:var(--muted)">${a.pct}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width:${a.pct}%;--fill-color:${a.color}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// TIMELINE
+// ════════════════════════════════════════════════════════════════
+function renderTimeline() {
+  const dotColors = ['#d97757','#34d399','#22d3ee'];
+  const statusLabels = { completado: 'Completado', pendiente: 'Pendiente', progreso: 'En progreso' };
+  const statusClasses = { completado: 'pill-green', pendiente: 'pill-orange', progreso: 'pill-purple' };
+
+  document.getElementById('timeline-container').innerHTML = DATA.conversations.map((c,i) => `
+    <div class="tl-item">
+      <div class="tl-left">
+        <div class="tl-dot" style="--dot-color:${dotColors[i]}"></div>
+        <div class="tl-line"></div>
+      </div>
+      <div class="tl-content">
+        <h4>${c.title}</h4>
+        <div class="meta">
+          ${c.date} ·
+          <span class="pill ${statusClasses[c.status]}">${statusLabels[c.status]}</span> ·
+          ${c.turns} turnos ·
+          ${c.topics.map(t=>`<span class="tag">${t}</span>`).join(' ')}
+        </div>
+        <div class="body">${c.detail}</div>
+        ${c.artifacts.length ? `<div style="margin-top:8px">${c.artifacts.map(a=>`<span class="tag" style="background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.2);color:var(--accent3)">📄 ${a}</span>`).join(' ')}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════════════════════════
+// CONVERSATIONS TABLE
+// ════════════════════════════════════════════════════════════════
 function renderConversations() {
-  const tbody = document.getElementById('conv-table-body');
-  tbody.innerHTML = DATA.conversations.map(c => `
+  const sc = { completado: 'status-completado', pendiente: 'status-pendiente', progreso: 'status-progreso' };
+  const sl = { completado: 'Completado', pendiente: 'Pendiente', progreso: 'En progreso' };
+  document.getElementById('conv-tbody').innerHTML = DATA.conversations.map(c => `
     <tr>
       <td style="color:var(--muted);font-size:12px">#${c.id}</td>
-      <td><b>${c.title}</b><br><span style="color:var(--muted);font-size:12px">${c.summary.substring(0,80)}…</span></td>
-      <td><span style="color:var(--accent3)">${c.topic}</span></td>
-      <td><span class="status-badge ${c.status}">${c.status.charAt(0).toUpperCase()+c.status.slice(1)}</span></td>
-      <td style="font-size:12px;color:var(--muted)">${c.artifacts.length ? c.artifacts.join(', ') : '—'}</td>
+      <td><b>${c.title}</b><br><span style="color:var(--muted);font-size:12px">${c.date}</span></td>
+      <td>${c.topics.map(t=>`<span class="tag">${t}</span>`).join(' ')}</td>
+      <td style="max-width:300px;font-size:12px;color:var(--muted)">${c.summary}</td>
+      <td><span class="status ${sc[c.status]}">${sl[c.status]}</span></td>
+      <td style="font-size:12px;color:var(--muted)">${c.artifacts.length ? c.artifacts.map(a=>`<div>📄 ${a}</div>`).join('') : '—'}</td>
     </tr>
   `).join('');
 }
 
-// ── PENDING LIST ──────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// PENDING
+// ════════════════════════════════════════════════════════════════
 function renderPending() {
-  document.getElementById('pending-list').innerHTML = DATA.pending.map(p => `
+  const allPending = DATA.conversations.flatMap(c =>
+    c.pendingActions.map(a => ({ conv: c.title, action: a }))
+  );
+  document.getElementById('pending-container').innerHTML = allPending.map(p => `
     <div class="pending-item">
-      <div class="pi-title">⚠ ${p.title}</div>
-      <div class="pi-desc">Conversación: <b>${p.conversation}</b> · ${p.action}</div>
+      <h4>⚠ ${p.action}</h4>
+      <p>Conversación: <b>${p.conv}</b></p>
     </div>
   `).join('');
 }
 
-// ── HEATMAP ───────────────────────────────────────────────────────────────────
-function renderHeatmap() {
+// ════════════════════════════════════════════════════════════════
+// INSIGHTS
+// ════════════════════════════════════════════════════════════════
+function renderInsights() {
+  document.getElementById('insight-grid').innerHTML = DATA.insights.map(ins => `
+    <div class="insight">
+      <div class="icon">${ins.icon}</div>
+      <h4>${ins.title}</h4>
+      <p>${ins.body}</p>
+    </div>
+  `).join('');
+
+  // Heatmap
   const days = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
-  const hours = [9,10,11,12,13,14,15,16,17,18,19,20];
-  // Simulated activity: Lunes a las 9-11 (today)
-  const active = { '6-9':1, '6-10':2, '6-11':1 };
-
-  const hoursDiv = document.getElementById('heatmap-hours');
-  hoursDiv.innerHTML = hours.map(h => `<span>${h}h</span>`).join('');
-
-  const heatDiv = document.getElementById('heatmap');
-  heatDiv.innerHTML = days.map((day, di) => `
+  const hours = [8,9,10,11,12,13,14,15,16,17,18,19,20];
+  const active = { '7-9': 1, '7-10': 2, '7-11': 2, '7-12': 1, '7-14': 1, '7-15': 1 };
+  document.getElementById('hm-hours').innerHTML = hours.map(h=>`<span>${h}h</span>`).join('');
+  document.getElementById('hm-wrap').innerHTML = days.map((day,di) => `
     <div class="heatmap-row">
-      <span class="heatmap-label">${day}</span>
+      <span class="hm-label">${day}</span>
       ${hours.map(h => {
-        const key = `${di+1}-${h}`;
-        const val = active[key] || 0;
-        const intensity = val === 0 ? '#1a2236' : val === 1 ? 'rgba(217,119,87,0.4)' : 'rgba(217,119,87,0.9)';
-        return `<div class="heatmap-cell" style="background:${intensity}" title="${day} ${h}h: ${val} conv."></div>`;
+        const k = `${di+1}-${h}`, v = active[k]||0;
+        const bg = v===0 ? '#1a2236' : v===1 ? 'rgba(217,119,87,.4)' : 'rgba(217,119,87,.85)';
+        return `<div class="hm-cell" style="background:${bg}" title="${day} ${h}h: ${v} conversación(es)"></div>`;
       }).join('')}
     </div>
   `).join('');
-}
 
-// ── WEEKLY SUMMARY ────────────────────────────────────────────────────────────
-function renderWeeklySummary() {
-  document.getElementById('weekly-summary').innerHTML = `
-    Esta semana Felipe inició <b>3 conversaciones</b> con Claude, todas concentradas el <b>lunes 6 de julio</b>.
-    Los temas principales fueron <b>Automatización de tareas</b>, <b>configuración de Jira Service Management</b> y <b>análisis de uso de Claude</b>.
-    Se completaron <b>2 de 3 tareas</b> (67% de efectividad). La conversación más productiva fue la carga de la
-    base de conocimiento de Jira con 24 puntos de configuración activos.
-    <br><br>
-    <b>Oportunidad identificada:</b> La configuración de la tarea automática quedó pendiente — retomar esta semana
-    para aprovechar la automatización completa. La memoria de Jira está activa pero sin consultas realizadas.
+  document.getElementById('exec-summary').innerHTML = `
+    <b>¿Qué hiciste con Claude esta semana?</b><br><br>
+    En tu primer período de uso real de Claude Cowork iniciaste <b>3 conversaciones</b> el lunes 6 de julio,
+    cubriendo los pilares más importantes para tu rol en Operaciones:
+    configuración del entorno (<i>plugins, base de conocimiento Jira</i>),
+    automatización (<i>tareas programadas</i>) y análisis/<i>reporting</i>.<br><br>
+    <b>Lo más valioso generado:</b> tienes una base de conocimiento de Jira activa con
+    <b>24 puntos de configuración</b> (automatizaciones, estados, JQL, permisos) que Claude puede
+    usar como referencia en cualquier momento.<br><br>
+    <b>¿Dónde está el mayor potencial sin usar?</b><br>
+    — La memoria de Jira está cargada pero sin explotar. Preguntas sobre estados incorrectos,
+    reglas de automatización o diseño de dashboards se pueden responder ahora mismo.<br>
+    — La tarea automática de reportes ya está configurada para las 8am. El primer reporte real
+    llegará mañana y podrá crecer semana a semana.<br><br>
+    <b>Para mostrar a tus jefes:</b> el dashboard vive en
+    <a href="https://felipearanc.github.io/dashboard/" target="_blank" style="color:var(--accent3)">
+    felipearanc.github.io/dashboard/</a> y se actualiza solo cada mañana.
+    Es un registro vivo de todo lo que resuelves con IA.
   `;
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('last-update').textContent =
+    new Date(DATA.generated).toLocaleString('es-CL', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
   initCharts();
+  renderProgress();
+  renderTimeline();
   renderConversations();
   renderPending();
-  renderHeatmap();
-  renderWeeklySummary();
-  document.getElementById('last-update').textContent = new Date(DATA.generated).toLocaleString('es-CL', {day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  renderInsights();
 });
 </script>
 </body>
