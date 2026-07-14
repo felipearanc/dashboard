@@ -125,8 +125,8 @@
     <p>Felipe Arancibia · Cowork · Jira · Libro RV · Sistema — Última actualización: <span id="last-update">—</span></p>
   </div>
   <div class="header-right">
-    <div class="badge">Cowork: <b>5 sesiones</b></div>
-    <div class="badge">Jira: <b>2 proyectos</b></div>
+    <div class="badge">Cowork: <b>13 sesiones</b></div>
+    <div class="badge">Jira: <b>3 proyectos</b></div>
     <div class="badge">RV: <b>3 operaciones</b></div>
     <button class="btn btn-ghost" onclick="window.location.reload()">↻ Actualizar</button>
     <button class="btn" onclick="window.open('https://github.com/felipearanc/dashboard','_blank')">GitHub ↗</button>
@@ -153,22 +153,22 @@
   <div class="kpi-grid kpi-grid-6" style="grid-template-columns:repeat(6,1fr)">
     <div class="kpi" style="--kpi-color:var(--accent3)">
       <div class="label">Sesiones Cowork</div>
-      <div class="value">5</div>
-      <div class="sub"><span class="pill pill-cyan">4 completadas</span></div>
+      <div class="value">13</div>
+      <div class="sub"><span class="pill pill-cyan">11 completadas</span></div>
     </div>
     <div class="kpi" style="--kpi-color:var(--accent4)">
       <div class="label">Artefactos</div>
-      <div class="value">10</div>
-      <div class="sub"><span class="pill pill-green">reportes + scripts</span></div>
+      <div class="value">18</div>
+      <div class="sub"><span class="pill pill-green">reportes + Excel + scripts</span></div>
     </div>
     <div class="kpi" style="--kpi-color:var(--accent2)">
       <div class="label">Proyectos Jira</div>
-      <div class="value">2</div>
-      <div class="sub"><span class="pill pill-purple">MDA + Vinculación</span></div>
+      <div class="value">3</div>
+      <div class="sub"><span class="pill pill-purple">MDA · DP · Vinculación</span></div>
     </div>
     <div class="kpi" style="--kpi-color:var(--yellow)">
       <div class="label">Automatizaciones</div>
-      <div class="value">5</div>
+      <div class="value">7</div>
       <div class="sub"><span class="pill pill-yellow">Jira + Cowork</span></div>
     </div>
     <div class="kpi" style="--kpi-color:var(--pink)">
@@ -178,7 +178,7 @@
     </div>
     <div class="kpi" style="--kpi-color:var(--accent)">
       <div class="label">Pendientes totales</div>
-      <div class="value">27</div>
+      <div class="value">26</div>
       <div class="sub"><span class="pill pill-orange">todas las fuentes</span></div>
     </div>
   </div>
@@ -186,7 +186,7 @@
   <div class="grid2 grid-wide">
     <div class="chart-card">
       <h3>Actividad — últimos 7 días</h3>
-      <div class="subtitle">Sesiones Cowork iniciadas por día</div>
+      <div class="subtitle">Sesiones Cowork activas por día</div>
       <div style="height:200px;position:relative"><canvas id="activityChart"></canvas></div>
     </div>
     <div class="chart-card">
@@ -258,7 +258,7 @@
     <div>
       <div class="jira-card">
         <h4><span style="background:#0052CC;padding:3px 8px;border-radius:4px;font-size:11px;color:white">JSM</span> Proyecto MDA — Mesa de Ayuda</h4>
-        <div class="meta">Jira Service Management · Tipos de solicitud: Solicitud de Servicio, Solicitud de Mejora · Canal: portal + correo</div>
+        <div class="meta">Jira Service Management · Tipos: Solicitud de Servicio, Solicitud de Mejora, Subtarea (nuevo) · Canal: portal + correo</div>
 
         <div class="section-label">Estados configurados</div>
         <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">
@@ -273,11 +273,21 @@
         <div class="auto-rule">🔒 <b>Cierre por inactividad 24h post-alerta</b> — Cierra automáticamente tras 24h adicionales. Problema conocido: comentario interno puede reiniciar campo `updated`.</div>
         <div class="auto-rule">🔀 <b>Flujo de Mejoras</b> — Tipo Baja → Derivado a Desarrollo + Pedro + correo. Tipo Alta → En Comité + segunda aprobación (Tatiana clasifica antes de aprobar F9).</div>
 
-        <div class="section-label">Configuración especial</div>
+        <div class="section-label">Novedades recientes</div>
         <div style="font-size:12px;color:var(--muted);line-height:1.6">
-          Campo auxiliar de organización (no nativo) para dashboards y filtros.<br>
-          JQL ajustado para `type` vs `"Request Type"` vs `issuetype`.<br>
-          CSV, permisos por portal, campo de canal de ingreso activo.
+          ✅ Tipo de issue <b>Subtarea</b> habilitado en el esquema de MDA — primera subtarea creada (MDA-559 sobre MDA-476) para asignar trabajo a consultores junior sin inflar métricas de volumen.<br>
+          ✅ Campo <b>"Formularios adjuntos - Dashboard"</b> resuelto: backfill de 172 tickets verificado vía API Proforma; visible en Lista y Detalle.
+        </div>
+      </div>
+
+      <div class="jira-card">
+        <h4><span style="background:#6554C0;padding:3px 8px;border-radius:4px;font-size:11px;color:white">DP</span> Proyecto DP — Desarrollo</h4>
+        <div class="meta">Recibe derivaciones del flujo de Mejoras de MDA · Analizado el 13-14/07</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7">
+          Análisis de ida y vuelta MDA → Desarrollo: de <b>422 casos MDA, 118 (28%) llegaron a Desarrollo</b>; 304 nunca fueron.<br>
+          <b>108 (92%) fueron pase único</b>; solo <b>10 (8%) rebotaron</b> (4 re-entraron a "Derivado a Desarrollo": MDA-49/71/84/430; 6 ligados a 2+ tickets DP).<br>
+          Devoluciones por falta de info: 6 casos MDA + 5 DP por "Esperando información"; DP-34 con adjunto "Sin Réplica".<br>
+          ⚠️ Clúster crítico: <b>MDA-476 y MDA-549</b> generaron 4 tickets DP (DP-121/123/129/130) y siguen abiertos.
         </div>
       </div>
 
@@ -285,9 +295,7 @@
         <h4><span style="background:#0065FF;padding:3px 8px;border-radius:4px;font-size:11px;color:white">SW</span> Proyecto Vinculación de Espacios</h4>
         <div class="meta">Jira Software · Integración con MDA · Flujo de escalamiento</div>
         <div style="font-size:12px;color:var(--muted);line-height:1.7">
-          Proyecto de software que recibe derivaciones del flujo de Mejoras de MDA.<br>
-          Vinculado al flujo de aprobación de alta complejidad (Comité + segunda aprobación).<br>
-          10 puntos pendientes de configuración identificados en la base de conocimiento.
+          Recibe derivaciones del flujo de Mejoras de MDA. 10 puntos pendientes de configuración identificados en la base de conocimiento.
         </div>
         <div style="margin-top:12px">
           <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Configuración completada</span><span style="color:var(--muted)">45%</span></div>
@@ -298,22 +306,26 @@
 
     <div>
       <div class="chart-card" style="margin-bottom:16px">
+        <h3>Análisis MDA → Desarrollo</h3>
+        <div class="subtitle">118 casos derivados: pase único vs rebote</div>
+        <div style="height:180px;position:relative"><canvas id="reboteChart"></canvas></div>
+      </div>
+
+      <div class="chart-card" style="margin-bottom:16px">
         <h3>Puntos pendientes Jira</h3>
         <div class="subtitle">Automatizaciones (14) vs Vinculación (10)</div>
-        <div style="height:180px;position:relative"><canvas id="jiraPendingChart"></canvas></div>
+        <div style="height:160px;position:relative"><canvas id="jiraPendingChart"></canvas></div>
       </div>
 
       <div class="table-card">
-        <h3>Pendientes Automatizaciones (14 identificados)</h3>
+        <h3>Recomendación central (análisis 13-07)</h3>
         <div style="font-size:12px;color:var(--muted);line-height:1.8">
-          La base de conocimiento cargada el 06-07 identificó 14 puntos pendientes en el proyecto de Automatizaciones de Jira. Requieren revisión y priorización con el equipo. Algunos críticos:
+          El rebote es poco frecuente; la causa raíz cuando ocurre es información incompleta al derivar. Acciones propuestas:
         </div>
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
-          <div class="auto-rule">🔴 Validar que comentario interno no reinicia campo <code>updated</code> en regla de inactividad</div>
-          <div class="auto-rule">🟡 Revisar flujo de segunda aprobación (Tatiana → F9) en tickets de Alta complejidad</div>
-          <div class="auto-rule">🟡 Confirmar campo auxiliar de organización en todos los dashboards</div>
-          <div class="auto-rule">🟢 Documentar diferencia entre <code>type</code>, <code>issuetype</code> y <code>"Request Type"</code> en JQL</div>
-          <div style="font-size:11px;color:var(--muted);padding:6px 0">+ 10 puntos adicionales en la sesión de Personalización de Cowork</div>
+          <div class="auto-rule">🔴 Checklist <b>"Listo para Desarrollo"</b> obligatorio en la transición a "Derivado a Desarrollo" (pasos para reproducir, ambiente, datos)</div>
+          <div class="auto-rule">🟡 Alerta automática cuando un caso entra 2ª vez a Desarrollo</div>
+          <div class="auto-rule">🟡 Priorizar clúster MDA-476 / MDA-549 (4 DP abiertos)</div>
         </div>
       </div>
     </div>
@@ -449,9 +461,9 @@
     </div>
     <div class="sys-right">
       <div style="margin-bottom:4px">Próxima ejecución</div>
-      <div style="color:var(--accent4);font-weight:700">2026-07-10 08:01 AM</div>
+      <div style="color:var(--accent4);font-weight:700">2026-07-15 08:01 AM</div>
       <div style="margin-top:6px">Última ejecución</div>
-      <div style="color:var(--text)">2026-07-09 07:29 AM</div>
+      <div style="color:var(--text)">2026-07-14 09:42 AM</div>
     </div>
   </div>
 
@@ -467,20 +479,8 @@
     <div class="sys-right">
       <span class="status status-activo">Activo</span>
       <div style="margin-top:6px;font-size:11px">Upload automático</div>
-      <div style="color:var(--accent);font-size:11px">⚠️ Bloqueado (sin red)</div>
+      <div style="color:var(--accent);font-size:11px">⚠️ Requiere Chrome conectado</div>
     </div>
-  </div>
-
-  <div class="section-label">Historial Git — dashboard</div>
-  <div class="table-card" style="margin-bottom:16px">
-    <table>
-      <thead><tr><th>Hash</th><th>Fecha</th><th>Mensaje</th></tr></thead>
-      <tbody>
-        <tr><td><code style="color:var(--accent3)">e05232e</code></td><td>2026-07-06</td><td>Skip Jekyll — añadir .nojekyll</td></tr>
-        <tr><td><code style="color:var(--accent3)">e4d9e5c</code></td><td>2026-07-06</td><td>Dashboard inicial — 2026-07-06 12:36</td></tr>
-        <tr><td><code style="color:var(--accent3)">15feccc</code></td><td>2026-07-06</td><td>Dashboard inicial — 2026-07-06 12:28</td></tr>
-      </tbody>
-    </table>
   </div>
 
   <div class="section-label">Archivos en Documents</div>
@@ -489,11 +489,10 @@
       <thead><tr><th>Archivo</th><th>Tipo</th><th>Descripción</th><th>Estado</th></tr></thead>
       <tbody>
         <tr><td><b>Libro_Operacion_RV_13.05.2026.xlsx</b></td><td><span class="tag">xlsx</span></td><td>Libro de Operaciones Renta Variable — 3 ops BlackRock</td><td><span class="status status-activo">Leído</span></td></tr>
-        <tr><td><b>Reportes Claude/Diario/</b></td><td><span class="tag">carpeta</span></td><td>4 reportes diarios (06 al 09-07)</td><td><span class="status status-completado">Completo</span></td></tr>
+        <tr><td><b>Análisis MDA→Desarrollo (informe + Excel 4 hojas)</b></td><td><span class="tag">docx/xlsx</span></td><td>Análisis de rebote de casos entre Mesa de Ayuda y Desarrollo</td><td><span class="status status-completado">Generado 13-07</span></td></tr>
+        <tr><td><b>Reportes Claude/Diario/</b></td><td><span class="tag">carpeta</span></td><td>Reportes diarios (06 al 14-07)</td><td><span class="status status-completado">Completo</span></td></tr>
         <tr><td><b>Reportes Claude/dashboard/index.html</b></td><td><span class="tag">html</span></td><td>Este dashboard</td><td><span class="status status-activo">Activo</span></td></tr>
-        <tr><td><b>Reportes Claude/setup_github.sh</b></td><td><span class="tag">sh</span></td><td>Script inicial de configuración GitHub Pages</td><td><span class="status status-completado">Ejecutado</span></td></tr>
-        <tr><td><b>Reportes Claude/update_dashboard.sh</b></td><td><span class="tag">sh</span></td><td>Script de actualización manual del dashboard</td><td><span class="status status-activo">Disponible</span></td></tr>
-        <tr><td><b>image.png, image2.png, image3.png, 4.png, 5.png</b></td><td><span class="tag">img</span></td><td>Imágenes en Documents (contenido no analizado)</td><td><span class="status status-pendiente">Sin analizar</span></td></tr>
+        <tr><td><b>Reportes Claude/setup_github.sh · update_dashboard.sh</b></td><td><span class="tag">sh</span></td><td>Scripts de configuración y actualización GitHub Pages</td><td><span class="status status-completado">Disponibles</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -508,6 +507,8 @@
           <tr><td>reporte-2026-07-07.md</td><td>3</td><td><span class="status status-completado">Generado</span></td></tr>
           <tr><td>reporte-2026-07-08.md</td><td>4</td><td><span class="status status-completado">Generado</span></td></tr>
           <tr><td>reporte-2026-07-09.md</td><td>5</td><td><span class="status status-completado">Generado</span></td></tr>
+          <tr><td>reporte-2026-07-10.md</td><td>8</td><td><span class="status status-completado">Generado</span></td></tr>
+          <tr><td>reporte-2026-07-14.md</td><td>13</td><td><span class="status status-completado">Generado</span></td></tr>
         </tbody>
       </table>
     </div>
@@ -528,19 +529,27 @@
   <div class="section-label">🔴 Alta prioridad</div>
 
   <div class="pending-item high">
-    <h4>Conectar extensión Chrome para upload automático a GitHub Pages <span class="badge-src">Sistema</span></h4>
-    <p>4 días consecutivos sin poder subir el dashboard a GitHub. La extensión Claude en Chrome debe estar activa antes de las 8:02 AM. Sin esto, el dashboard público no se actualiza.</p>
+    <h4>Priorizar clúster MDA-476 / MDA-549 <span class="badge-src">Jira / DP</span></h4>
+    <p>El análisis del 13-07 detectó que estos dos casos generaron 4 tickets de Desarrollo (DP-121, DP-123, DP-129, DP-130) que siguen abiertos. Son el rebote de mayor impacto detectado entre los 118 casos derivados.</p>
+  </div>
+  <div class="pending-item high">
+    <h4>Implementar checklist "Listo para Desarrollo" en la transición a Derivado a Desarrollo <span class="badge-src">Jira / MDA</span></h4>
+    <p>Recomendación central del análisis de rebote. La causa raíz cuando un caso rebota es información incompleta al derivar. Checklist obligatorio (pasos para reproducir, ambiente, datos) + alerta automática cuando un caso entra 2ª vez a Desarrollo.</p>
   </div>
   <div class="pending-item high">
     <h4>Validar bug de inactividad Jira: comentario interno reinicia campo `updated` <span class="badge-src">Jira / MDA</span></h4>
-    <p>Problema conocido documentado en la base de conocimiento. La regla de cierre por inactividad puede no funcionar correctamente si el comentario de alerta de 72h reinicia el campo updated, impidiendo el cierre automático a las 24h.</p>
+    <p>Problema conocido documentado en la base de conocimiento. La regla de cierre por inactividad puede no funcionar si el comentario de alerta de 72h reinicia el campo updated, impidiendo el cierre automático a las 24h.</p>
   </div>
 
   <div class="section-label">🟡 Media prioridad</div>
 
   <div class="pending-item med">
+    <h4>Completar campos de subtarea MDA-559 y validar exclusión en JQL <span class="badge-src">Jira / MDA</span></h4>
+    <p>La primera subtarea (MDA-559 sobre MDA-476) se creó sin asignado, informador ni descripción — Jira no los hereda del padre. Completar manualmente y revisar que los dashboards con JQL <code>project = MDA</code> excluyan subtareas para no inflar las métricas de volumen.</p>
+  </div>
+  <div class="pending-item med">
     <h4>Iniciar consultas operativas sobre Jira JSM <span class="badge-src">Cowork / Jira</span></h4>
-    <p>La sesión "Personaliza Claude según tu rol" cargó 24 puntos de configuración de MDA y Vinculación. Llevan activos desde el 06-07 sin ninguna consulta. Alto ROI: Claude puede responder sobre JQL, estados, automatizaciones y dashboards de forma inmediata en esa sesión.</p>
+    <p>La base de conocimiento con 24 puntos de configuración de MDA y Vinculación lleva cargada desde el 06-07. Alto ROI: Claude puede responder sobre JQL, estados, automatizaciones y dashboards de forma inmediata.</p>
   </div>
   <div class="pending-item med">
     <h4>Revisar y priorizar los 14 puntos pendientes del proyecto Automatizaciones <span class="badge-src">Jira / MDA</span></h4>
@@ -552,22 +561,18 @@
   </div>
   <div class="pending-item med">
     <h4>Completar hojas Poliza JP y Poliza GS en el Libro RV <span class="badge-src">Libro RV</span></h4>
-    <p>El archivo Libro_Operacion_RV_13.05.2026.xlsx tiene 2 hojas vacías (Poliza JP y Poliza GS). Las pólizas de JPM Securities y Goldman Sachs para las 3 operaciones no están registradas.</p>
-  </div>
-  <div class="pending-item med">
-    <h4>Revisar flujo segunda aprobación tickets Alta complejidad (Tatiana → F9) <span class="badge-src">Jira / MDA</span></h4>
-    <p>El flujo de Mejoras tipo "Alta" requiere que Tatiana clasifique antes de aprobar en F9. Verificar que la regla esté correctamente encadenada.</p>
+    <p>El archivo Libro_Operacion_RV_13.05.2026.xlsx tiene 2 hojas vacías. Las pólizas de JPM Securities y Goldman Sachs para las 3 operaciones no están registradas.</p>
   </div>
 
   <div class="section-label">🟢 Baja prioridad</div>
 
   <div class="pending-item low">
-    <h4>Definir y configurar una tarea programada adicional <span class="badge-src">Cowork</span></h4>
-    <p>La sesión "Programar una tarea recurrente" quedó sin completar. Se puede retomar para configurar automatizaciones extra: resumen de noticias, recordatorio semanal, reporte de métricas.</p>
+    <h4>Conectar extensión Chrome para upload automático a GitHub Pages <span class="badge-src">Sistema</span></h4>
+    <p>El upload automático a GitHub requiere la extensión Claude en Chrome activa antes de las 8 AM. Mientras no lo esté, el dashboard se actualiza localmente y se sube manualmente con git push.</p>
   </div>
   <div class="pending-item low">
-    <h4>Analizar imágenes en Documents (5 archivos sin revisar) <span class="badge-src">Archivos</span></h4>
-    <p>image.png, image2.png, image3.png, 4.png, 5.png — sin contenido analizado. Pueden contener información relevante.</p>
+    <h4>Definir y configurar una tarea programada adicional <span class="badge-src">Cowork</span></h4>
+    <p>La sesión "Programar una tarea recurrente" quedó sin completar. Se puede retomar para automatizaciones extra: resumen de noticias, recordatorio semanal, reporte de métricas.</p>
   </div>
   <div class="pending-item low">
     <h4>Documentar diferencia JQL: type vs issuetype vs "Request Type" <span class="badge-src">Jira / MDA</span></h4>
@@ -583,45 +588,45 @@
 
   <div class="grid3" style="margin-bottom:16px">
     <div class="insight">
+      <div class="icon">🔍</div>
+      <h4>Análisis MDA → Desarrollo entregado</h4>
+      <p>De 422 casos MDA, 118 (28%) llegaron a Desarrollo y 92% fueron pase único. El rebote es raro (10 casos); cuando ocurre, la causa es información incompleta al derivar. Entregado informe ejecutivo + Excel de 4 hojas.</p>
+    </div>
+    <div class="insight">
+      <div class="icon">🧩</div>
+      <h4>Subtareas habilitadas en MDA</h4>
+      <p>Se activó el tipo "Subtarea" en el esquema de MDA y se creó la primera (MDA-559) para asignar trabajo a consultores junior sin generar tickets nuevos que inflen las métricas de volumen.</p>
+    </div>
+    <div class="insight">
+      <div class="icon">✅</div>
+      <h4>Formularios adjuntos: resuelto</h4>
+      <p>El campo "Formularios adjuntos - Dashboard" quedó verificado contra la API Proforma: 172 tickets con formulario, visibles en Lista y Detalle. Los tickets "en blanco" genuinamente no tienen formulario adjunto.</p>
+    </div>
+    <div class="insight">
       <div class="icon">🤖</div>
-      <h4>Ciclo automático — 3 días consecutivos</h4>
-      <p>La tarea programada se ejecutó sin fallos el 7, 8 y 9 de julio. El único punto de falla es el upload a GitHub: el sandbox de Cowork no tiene acceso de red a la API de GitHub.</p>
-    </div>
-    <div class="insight">
-      <div class="icon">🧠</div>
-      <h4>Memoria Jira sin explotar</h4>
-      <p>24 puntos de configuración de JSM cargados el 06-07 llevan 3 días activos sin ninguna consulta operativa. Es el recurso de mayor valor disponible ahora mismo.</p>
-    </div>
-    <div class="insight">
-      <div class="icon">📊</div>
-      <h4>Dashboard multimodal real</h4>
-      <p>Primera versión que integra 4 fuentes distintas: sesiones Cowork, proyectos Jira, operaciones RV y estado del sistema. Base para expansión futura.</p>
+      <h4>Ciclo automático — 8 días consecutivos</h4>
+      <p>La tarea programada se ejecutó sin fallos del 7 al 14 de julio. El único punto de falla sigue siendo el upload a GitHub cuando la extensión Chrome no está conectada.</p>
     </div>
     <div class="insight">
       <div class="icon">⚠️</div>
-      <h4>27 pendientes entre fuentes</h4>
-      <p>Distribuidos: 14 en Automatizaciones Jira, 10 en Vinculación, 2 en Sistema (GitHub), 1 en Cowork sin completar. Los de Jira son los de mayor impacto operacional.</p>
-    </div>
-    <div class="insight">
-      <div class="icon">📈</div>
-      <h4>Libro RV: 1 compra, 2 ventas BlackRock</h4>
-      <p>3 operaciones de ETF en USD vía JPM y Goldman Sachs. Valor comprado: $20,196. Valor vendido: $1,242. Las hojas de póliza están pendientes de completar.</p>
+      <h4>Clúster crítico abierto</h4>
+      <p>MDA-476 y MDA-549 generaron 4 tickets DP (DP-121/123/129/130) que siguen abiertos. Es el rebote de mayor impacto y vale la pena priorizarlo con Desarrollo.</p>
     </div>
     <div class="insight">
       <div class="icon">🎯</div>
       <h4>Próximos 3 pasos de mayor impacto</h4>
-      <p>1) Conectar extensión Chrome (desbloquea GitHub). 2) Retomar sesión Jira y hacer consultas reales de JSM. 3) Validar bug de inactividad en MDA en producción.</p>
+      <p>1) Priorizar clúster MDA-476/549 con Desarrollo. 2) Implementar checklist "Listo para Desarrollo". 3) Completar campos de MDA-559 y validar exclusión de subtareas en JQL.</p>
     </div>
   </div>
 
   <div class="chart-card">
-    <h3>Resumen ejecutivo — 2026-07-09</h3>
+    <h3>Resumen ejecutivo — 2026-07-14</h3>
     <p style="font-size:14px;line-height:1.9;color:var(--text);margin-top:8px">
-      <b>Estado al 9 de julio de 2026</b> — Este dashboard integra por primera vez las cuatro fuentes de información disponibles en tu entorno Cowork.<br><br>
-      <b>Cowork:</b> 5 sesiones registradas, ciclo automático de reporte activo desde el 6 de julio (3 ejecuciones). La única limitación es el upload a GitHub Pages, bloqueado porque el sandbox de Cowork no tiene acceso de red a la API de GitHub y la extensión Chrome no ha estado conectada.<br><br>
-      <b>Jira:</b> La base de conocimiento de JSM (proyecto MDA) está cargada con 24 puntos de configuración — incluyendo automatizaciones de prioridad, inactividad y flujo de mejoras — pero sin consultas operativas desde que se cargó. El bug potencial del campo <code>updated</code> es el punto más urgente a validar en producción.<br><br>
-      <b>Libro RV:</b> 3 operaciones de renta variable (ETF BlackRock) con contrapartes JPM Securities y Goldman Sachs, por un valor total de $21,438.87 USD. Las hojas de póliza están vacías.<br><br>
-      <b>Límite técnico:</b> Las conversaciones de claude.ai web y la app móvil no son accesibles vía API — solo las sesiones de Cowork (escritorio) pueden leerse automáticamente. Si quieres agregar chats del web, se puede hacer manualmente.
+      <b>Estado al 14 de julio de 2026</b> — 13 sesiones Cowork registradas, 11 completadas, 1 pendiente. Semana marcada por trabajo real de análisis en Jira.<br><br>
+      <b>Jira (lo nuevo):</b> Se entregó el análisis de ida y vuelta MDA → Desarrollo (422 casos, 118 derivados, 92% pase único, 10 rebotes) con informe ejecutivo y Excel de 4 hojas; la recomendación central es un checklist "Listo para Desarrollo". Se habilitó el tipo Subtarea en MDA y se creó la primera (MDA-559). El campo "Formularios adjuntos" quedó resuelto y verificado.<br><br>
+      <b>Cowork:</b> Ciclo automático activo 8 días consecutivos (7 al 14 de julio). El upload a GitHub Pages depende de la extensión Chrome; mientras no esté conectada, se actualiza localmente y se sube con <code>git push</code>.<br><br>
+      <b>Libro RV:</b> 3 operaciones de renta variable (ETF BlackRock) con JPM Securities y Goldman Sachs, valor total $21,438.87 USD. Las hojas de póliza siguen vacías.<br><br>
+      <b>Límite técnico:</b> Solo se leen sesiones de Cowork (escritorio) — las de claude.ai web o móvil no son accesibles automáticamente.
     </p>
   </div>
 
@@ -630,75 +635,94 @@
 </div><!-- /main -->
 
 <div class="footer">
-  Claude Dashboard · Actualizado automáticamente cada día a las 8:02 AM ·
+  Claude Dashboard · Actualizado automáticamente cada día a las 8:00 AM ·
   <a href="https://felipearanc.github.io/dashboard/">felipearanc.github.io/dashboard</a> ·
   <a href="https://github.com/felipearanc/dashboard">GitHub</a>
 </div>
 
 <script>
 const DATA = {
-  generated: "2026-07-09T08:00:00",
+  generated: "2026-07-14T09:42:00",
   conversations: [
     {
-      id:1, title:"Programar una tarea recurrente", date:"2026-07-06",
-      topics:["Automatización"],
-      summary:"Primera exploración de tareas programadas. Claude preguntó qué automatizar. Sin tarea concreta configurada.",
-      detail:"El usuario quiso explorar automatización en Cowork. Claude ofreció opciones (noticias, recordatorios, reportes). No se definió ninguna tarea concreta.",
-      status:"pendiente", turns:2, artifacts:[],
-      pendingActions:["Definir y configurar una tarea programada concreta"]
+      id:1, title:"Analítica de casos — Jira (MDA → Desarrollo)", date:"2026-07-13",
+      topics:["Análisis / Reportes","Jira"],
+      summary:"Análisis del ir y venir entre Mesa de Ayuda y Desarrollo. 422 casos MDA, 118 derivados (28%), 92% pase único, 10 rebotes. Entregó informe + Excel de 4 hojas.",
+      detail:"Sesión de análisis en modo solo lectura. Cruzó tres señales: nº de veces en 'Derivado a Desarrollo', tickets DP vinculados y devoluciones por falta de info. Hallazgos: 118 de 422 casos (28%) llegaron a Desarrollo; 108 (92%) pase único; 10 (8%) rebotaron (4 re-entraron: MDA-49/71/84/430; 6 ligados a 2+ DP). Clúster crítico: MDA-476 y MDA-549 → 4 tickets DP abiertos. Recomendación: checklist 'Listo para Desarrollo' + alerta de 2ª entrada a dev.",
+      status:"completado", turns:24,
+      artifacts:["Informe ejecutivo MDA→Desarrollo","Excel 4 hojas (Resumen, Casos a Desarrollo, Casos en rebote, Devoluciones)"],
+      pendingActions:["Priorizar clúster MDA-476/549","Implementar checklist Listo para Desarrollo"]
     },
     {
-      id:2, title:"Personaliza Claude según tu rol", date:"2026-07-06",
-      topics:["Cowork / Setup","Jira / JSM"],
-      summary:"Setup inicial Cowork: rol Operaciones/Negocios, plugins sugeridos, y carga de base de conocimiento JSM completa con 24 puntos de configuración.",
-      detail:"Claude identificó rol del usuario (Operaciones/Negocios). Sugirió plugins: Operations, Finance, Small Business. Usuario subió 2 archivos Jira. Claude cargó como memoria: proyecto MDA, estados, automatizaciones de prioridad/inactividad/mejoras, 24 puntos pendientes.",
-      status:"completado", turns:10,
-      artifacts:["Base conocimiento Jira (input)","Automatizaciones Jira (input)"],
-      pendingActions:["Usar la memoria Jira para consultas operativas reales","Revisar 14 pendientes Automatizaciones","Revisar 10 pendientes Vinculación"]
+      id:2, title:"Subtareas MDA para consultores", date:"2026-07-13",
+      topics:["Jira","Automatización"],
+      summary:"Habilitó el tipo de issue Subtarea en el esquema de MDA y creó la primera (MDA-559 sobre MDA-476) para asignar trabajo a consultores junior sin inflar métricas.",
+      detail:"El usuario quería dividir trabajo dentro de un ticket sin crear un ticket nuevo. Claude explicó que la solución es una subtarea. El proyecto MDA (JSM) no tenía el tipo Subtarea; el usuario lo habilitó en el esquema con guía de Claude y creó MDA-559 sobre MDA-476. Se aclaró que la subtarea tiene su propio key pero no cuenta como solicitud nueva ni genera SLA propio, salvo que un dashboard use JQL genérico sin filtrar por tipo.",
+      status:"completado", turns:12,
+      artifacts:["MDA-559 (subtarea de prueba)","Tipo Subtarea habilitado en esquema MDA"],
+      pendingActions:["Completar asignado/informador/descripción de MDA-559","Validar que JQL de dashboards excluya subtareas"]
     },
     {
-      id:3, title:"Reporte diario + Dashboard Claude", date:"2026-07-06",
+      id:3, title:"Jira formularios adjuntos (Atlassian Rovo)", date:"2026-07-10",
+      topics:["Jira","Automatización"],
+      summary:"Backfill del campo 'Formularios adjuntos' en 535 tickets MDA+DP (172 con valor) y verificación vía API Proforma. Campo resuelto y visible en Lista y Detalle.",
+      detail:"Sesión de automatización Jira vía Chrome. Backfill retroactivo sobre 535 tickets MDA+DP: 172 con formulario, el resto genuinamente sin formulario. Se auditó directamente la API Proforma para los tickets que el usuario veía en blanco (MDA-546/540/539/537/536/534/521) y todos devuelven array vacío — 'Ninguno' es el valor correcto, no un bug. Verificado contra MDA-508 (F9), MDA-476 (F2+1), MDA-424 (F1+3). Tarea programada 30min activa para tickets nuevos.",
+      status:"completado", turns:38,
+      artifacts:["Backfill 172 tickets","Tarea programada Jira 30min"],
+      pendingActions:[]
+    },
+    {
+      id:4, title:"Claude dashboard diario (ciclo automático)", date:"2026-07-14",
+      topics:["Automatización","Análisis / Reportes","GitHub / Deploy"],
+      summary:"Ciclo automático de actualización del dashboard: 8 ejecuciones consecutivas (07 al 14 de julio). Analiza sesiones, actualiza HTML y guarda reporte Markdown.",
+      detail:"Tarea programada diaria a las 8am. Ejecuciones exitosas del 7 al 14 de julio. Cada corrida lee las sesiones de Cowork, recalcula métricas, regenera el dashboard HTML y guarda el reporte del día. El upload a GitHub Pages depende de la extensión Chrome conectada; mientras no lo esté, se actualiza localmente y se sube con git push.",
+      status:"completado", turns:8,
+      artifacts:["dashboard/index.html (actualizado)","reportes diarios .md"],
+      pendingActions:["Conectar extensión Chrome para upload automático"]
+    },
+    {
+      id:5, title:"Reporte diario + Dashboard Claude (inicial)", date:"2026-07-06",
       topics:["Análisis / Reportes","Automatización","GitHub / Deploy"],
-      summary:"Primer reporte diario, diseño del dashboard, publicación en GitHub Pages, configuración tarea programada 8am, corrección Jekyll con .nojekyll.",
-      detail:"Sesión más compleja. Generó reporte Markdown, diseñó dashboard HTML con 5 tabs y Chart.js, configuró token GitHub, scripts de setup/update, tarea programada diaria, y corrigió error Jekyll con .nojekyll para activar GitHub Pages.",
+      summary:"Primer reporte diario, diseño del dashboard con Chart.js, publicación en GitHub Pages, tarea programada 8am y corrección Jekyll con .nojekyll.",
+      detail:"Sesión fundacional. Generó reporte Markdown, diseñó el dashboard HTML con tabs y Chart.js, configuró token GitHub, scripts de setup/update, la tarea programada diaria y corrigió el error Jekyll con .nojekyll para activar GitHub Pages.",
       status:"completado", turns:28,
       artifacts:["reporte-2026-07-06.md","dashboard/index.html","setup_github.sh","update_dashboard.sh",".config.json",".nojekyll"],
       pendingActions:["Conectar extensión Chrome para upload automático"]
     },
     {
-      id:4, title:"Claude dashboard diario (07-07)", date:"2026-07-07",
-      topics:["Automatización","Análisis / Reportes"],
-      summary:"1ª ejecución automática. 3 sesiones analizadas, dashboard actualizado, reporte guardado. GitHub upload bloqueado.",
-      detail:"Primera ejecución autónoma a las 8am. Analizó 3 sesiones, 2 completadas / 1 pendiente. Actualizó HTML y guardó reporte-2026-07-07.md. GitHub upload no posible: sandbox sin acceso de red y Chrome no conectado.",
-      status:"completado", turns:15,
-      artifacts:["reporte-2026-07-07.md","dashboard/index.html (actualizado)"],
-      pendingActions:["Conectar extensión Chrome para upload GitHub"]
+      id:6, title:"Personaliza Claude según tu rol", date:"2026-07-06",
+      topics:["Cowork / Setup","Jira"],
+      summary:"Setup inicial de Cowork: rol Operaciones/Negocios, plugins sugeridos, y carga de base de conocimiento JSM con 24 puntos de configuración.",
+      detail:"Claude identificó el rol (Operaciones/Negocios) y sugirió plugins (Operations, Finance, Small Business). El usuario subió 2 archivos Jira que Claude cargó como memoria operativa: proyecto MDA, estados, automatizaciones de prioridad/inactividad/mejoras y 24 puntos pendientes.",
+      status:"completado", turns:10,
+      artifacts:["Base conocimiento Jira (input)","Automatizaciones Jira (input)"],
+      pendingActions:["Usar la memoria Jira para consultas operativas","Revisar 14 pendientes Automatizaciones","Revisar 10 pendientes Vinculación"]
     },
     {
-      id:5, title:"Claude dashboard diario (07-08)", date:"2026-07-08",
-      topics:["Automatización","Análisis / Reportes"],
-      summary:"2ª ejecución automática. 4 sesiones (1 nueva), métricas actualizadas. GitHub upload bloqueado 2° día.",
-      detail:"Segunda ejecución autónoma. Detectó 1 nueva sesión (07-07). 3 completadas / 1 pendiente / 8 artefactos. Actualizó dashboard/index.html y guardó reporte-2026-07-08.md. GitHub upload no completado (3er día consecutivo).",
-      status:"completado", turns:12,
-      artifacts:["reporte-2026-07-08.md","dashboard/index.html (actualizado)"],
-      pendingActions:["Conectar extensión Chrome para upload GitHub"]
+      id:7, title:"Programar una tarea recurrente", date:"2026-07-06",
+      topics:["Automatización"],
+      summary:"Primera exploración de tareas programadas. Claude ofreció opciones. No se definió ninguna tarea concreta.",
+      detail:"El usuario quiso explorar automatización en Cowork. Claude ofreció opciones (noticias, recordatorios, reportes). La sesión quedó abierta sin configurar una tarea concreta.",
+      status:"pendiente", turns:2, artifacts:[],
+      pendingActions:["Definir y configurar una tarea programada concreta"]
     }
   ],
-  topicCounts: {"Automatización":4,"Análisis/Reportes":3,"Jira/JSM":1,"Cowork/Setup":1,"GitHub/Deploy":1},
+  topicCounts: {"Automatización":6,"Jira":5,"Análisis/Reportes":5,"GitHub/Deploy":2,"Cowork/Setup":1},
   weeklyActivity: {
-    labels:["Jue 3","Vie 4","Sáb 5","Dom 6","Lun 7","Mar 8","Mié 9"],
-    values:[0,0,0,3,1,1,1]
+    labels:["Mar 8","Mié 9","Jue 10","Vie 11","Sáb 12","Dom 13","Lun 14"],
+    values:[1,2,2,1,1,3,3]
   },
-  artifactTypes:{"Reportes (.md)":3,"Dashboard (HTML)":3,"Scripts (.sh)":2,"Config":1,"Git":1},
-  pendingSources:{"Jira/MDA":14,"Vinculación":10,"Sistema":2,"Cowork":1},
-  growthData:{ labels:["06-07","07-07","08-07","09-07"], values:[3,3,4,5] },
+  artifactTypes:{"Reportes (.md)":6,"Dashboard (HTML)":6,"Excel (.xlsx)":1,"Scripts (.sh)":2,"Config":1,"Jira/Issues":2},
+  pendingSources:{"Jira/MDA":13,"Vinculación":10,"Sistema":2,"Cowork":1},
+  growthData:{ labels:["06-07","07-07","08-07","09-07","10-07","11-07","12-07","13-07","14-07"], values:[3,4,5,7,8,9,10,12,13] },
   progressAreas:[
-    {label:"Dashboard & Reportes", pct:95, color:"#22d3ee"},
+    {label:"Dashboard & Reportes", pct:98, color:"#22d3ee"},
+    {label:"Análisis Jira (MDA/DP)", pct:90, color:"#34d399"},
+    {label:"Automatización Jira", pct:82, color:"#f59e0b"},
     {label:"Automatización Cowork", pct:80, color:"#d97757"},
-    {label:"Configuración Jira MDA", pct:65, color:"#8b5cf6"},
+    {label:"Configuración Jira MDA", pct:68, color:"#8b5cf6"},
     {label:"Vinculación de Espacios", pct:45, color:"#0065FF"},
-    {label:"Libro RV (pólizas)", pct:30, color:"#f59e0b"},
-    {label:"Plugins instalados", pct:20, color:"#34d399"}
+    {label:"Libro RV (pólizas)", pct:30, color:"#ec4899"}
   ]
 };
 
@@ -739,7 +763,7 @@ function initCharts() {
 
   new Chart(document.getElementById('statusChart'),{
     type:'doughnut',
-    data:{labels:['Completadas','Pendientes'],datasets:[{data:[4,1],backgroundColor:['#34d399','#d97757'],borderWidth:0,hoverOffset:8}]},
+    data:{labels:['Completadas','Pendientes'],datasets:[{data:[11,1],backgroundColor:['#34d399','#d97757'],borderWidth:0,hoverOffset:8}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'70%',plugins:{legend:{display:true,position:'bottom',labels:{padding:14,usePointStyle:true}}}}
   });
 
@@ -758,6 +782,12 @@ function initCharts() {
   });
 
   mkChart('artifactsChart','polarArea',Object.keys(DATA.artifactTypes),Object.values(DATA.artifactTypes),{legend:true,legendPos:'bottom'});
+
+  new Chart(document.getElementById('reboteChart'),{
+    type:'doughnut',
+    data:{labels:['Pase único (108)','Rebote (10)'],datasets:[{data:[108,10],backgroundColor:['#34d399','#ec4899'],borderWidth:0,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{display:true,position:'bottom',labels:{padding:12,usePointStyle:true}}}}
+  });
 
   new Chart(document.getElementById('jiraPendingChart'),{
     type:'doughnut',
@@ -794,13 +824,13 @@ function renderProgress() {
 
 // ── TIMELINE ──
 function renderTimeline() {
-  const dotC=['#d97757','#34d399','#22d3ee','#8b5cf6','#f59e0b'];
-  const sc={completado:'pill-green',pendiente:'pill-orange'};
-  const sl={completado:'Completado',pendiente:'Pendiente'};
+  const dotC=['#ec4899','#8b5cf6','#34d399','#22d3ee','#d97757','#f59e0b','#0065FF'];
+  const sc={completado:'pill-green',pendiente:'pill-orange',en_progreso:'pill-purple'};
+  const sl={completado:'Completado',pendiente:'Pendiente',en_progreso:'En progreso'};
   document.getElementById('timeline-container').innerHTML=DATA.conversations.map((c,i)=>`
     <div class="tl-item">
       <div class="tl-left">
-        <div class="tl-dot" style="--dot-color:${dotC[i]}"></div>
+        <div class="tl-dot" style="--dot-color:${dotC[i%dotC.length]}"></div>
         <div class="tl-line"></div>
       </div>
       <div class="tl-content">
@@ -815,8 +845,8 @@ function renderTimeline() {
 
 // ── CONVERSATIONS TABLE ──
 function renderConversations() {
-  const sc={completado:'status-completado',pendiente:'status-pendiente'};
-  const sl={completado:'Completado',pendiente:'Pendiente'};
+  const sc={completado:'status-completado',pendiente:'status-pendiente',en_progreso:'status-progreso'};
+  const sl={completado:'Completado',pendiente:'Pendiente',en_progreso:'En progreso'};
   document.getElementById('conv-tbody').innerHTML=DATA.conversations.map(c=>`
     <tr>
       <td style="color:var(--muted);font-size:11px">#${c.id}</td>
